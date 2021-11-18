@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GitHubController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -24,12 +25,6 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('github')->redirect();
-});
 
-Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
-
-    // $user->token
-});
+Route::get('auth/github', [GitHubController::class, 'gitRedirect']);
+Route::get('auth/github/callback', [GitHubController::class, 'gitCallback']);

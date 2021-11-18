@@ -33,7 +33,7 @@ return [
     'github' => [
         'client_id' => env('CLIENT_ID'),
         'client_secret' => env('CLIENT_SECRET'),
-        'redirect' => 'http://url-shortener.test/',
+        'redirect' => 'http://url-shortener.test/auth/github/callback',
     ],
 
 ];

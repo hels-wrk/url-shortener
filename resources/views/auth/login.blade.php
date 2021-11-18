@@ -51,6 +51,14 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+
+                <div class="flex items-center justify-end mt-4">
+                    <a class="btn" href="{{ url('auth/github') }}"
+                       style="background: #313131; color: #ffffff; padding: 10px; width: 100%; text-align: center; display: block; border-radius:3px;">
+                        Login with GitHub
+                    </a>
+                </div>
+
         </form>
     </x-auth-card>
 </x-guest-layout>

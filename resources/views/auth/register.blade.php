@@ -55,8 +55,6 @@
                 </x-button>
             </div>
 
-                <a href='/auth/redirect' type='button'>Login with GitHub</a>
-
         </form>
     </x-auth-card>
 </x-guest-layout>
