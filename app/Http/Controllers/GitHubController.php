@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+
 
 class GitHubController extends Controller
 {
@@ -32,8 +34,8 @@ class GitHubController extends Controller
             } else {
                 $gitUser = User::create([
                     'name' => $user->nickname,
-                    'email' => $user->email,
-                    'github_id'=> $user->id,
+                    'email' => $user->getEmail(),
+                    'github_id'=> $user->getId(),
                     'auth_type'=> 'github',
                     'password' => encrypt('gitpwd059')
                 ]);
@@ -43,7 +45,7 @@ class GitHubController extends Controller
                 return redirect('/dashboard');
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dd($e->getMessage());
         }
     }
