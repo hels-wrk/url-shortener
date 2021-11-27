@@ -9,7 +9,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('URL-shotener') }}
+            {{ __('URL shotener') }}
         </h2>
     </x-slot>
 
@@ -24,6 +24,11 @@
                     <div class="input append ml-3">
                         <button class="btn btn-secondary" type="submit">Get short URL</button>
                     </div>
+                </div>
+                <div class="row">
+                    <input type="text" name = "secret" class="form-control col-4 ml-3" placeholder="Secret key" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" name = "customUrl" class="form-control col-4 ml-4" placeholder="Custom URL" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" onfocus="(this.type='date')" name = "linkLifetime" class="form-control col-2 ml-4" placeholder="URL death date" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
             </form>
         </div>
