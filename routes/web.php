@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\CustomUrlController;
+use App\Http\Controllers\DeleterShortLinkController;
 use App\Http\Controllers\GitHubController;
 use App\Http\Controllers\ShortLinkController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +33,8 @@ Route::post('/generate-shorten-link', [ShortLinkController::class, 'store'])->na
 Route::get('/{code}', [ShortLinkController::class, 'shortenLink'])->name('shorten.link');
 
 Route::get('/{code}/{secret}', [ShortLinkController::class, 'shortenLinkWithSecretKey']);
+
+Route::post('/delete-shortUrl', [DeleterShortLinkController::class, 'delete']);
+
 
 

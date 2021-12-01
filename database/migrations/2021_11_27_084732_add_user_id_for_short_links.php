@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLifetimeSecretToShortLink extends Migration
+class AddUserIdForShortLinks extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddLifetimeSecretToShortLink extends Migration
      */
     public function up()
     {
-        Schema::table('short_links', function (Blueprint $table) {
-            $table->date('lifetime')->nullable();
-            $table->string('secret')->nullable();
+        Schema::table('short_links', function ($table) {
+            $table->integer('user_id')->nullable();
+            $table->index('user_id');
         });
     }
 
@@ -26,9 +26,8 @@ class AddLifetimeSecretToShortLink extends Migration
      */
     public function down()
     {
-        Schema::table('short_links', function (Blueprint $table) {
-            $table->dropColumn('lifetime');
-            $table->dropColumn('secret');
+        Schema::table('short_links', function ($table) {
+            $table->dropColumn('user_id');
         });
     }
 }

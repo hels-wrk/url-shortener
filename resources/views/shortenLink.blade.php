@@ -25,10 +25,10 @@
                         <button class="btn btn-secondary" type="submit">Get short URL</button>
                     </div>
                 </div>
-                <div class="row">
-                    <input type="text" name = "secret" class="form-control col-4 ml-3" placeholder="Secret key" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <input type="text" name = "customUrl" class="form-control col-4 ml-4" placeholder="Custom URL" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <input type="text" onfocus="(this.type='date')" name = "linkLifetime" class="form-control col-2 ml-4" placeholder="URL death date" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="row mb-3">
+                    <input type="text" onfocus="(this.placeholder='a-z,A-Z,0-9 (max 8 symbols)')" name = "secret" class="form-control col-4 ml-3" placeholder="Secret key" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" onfocus="(this.placeholder='a-z,A-Z,0-9 (max 10 symbols)')" name = "customUrl" class="form-control col-4 ml-4" placeholder="Custom URL" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input type="text" onfocus="(this.type='date')" name = "linkLifetime" class="form-control col-3 ml-4" placeholder="URL death date" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
             </form>
         </div>
@@ -51,17 +51,54 @@
                 @foreach($shortLinks as $row)
                     <tr>
                         <td>{{ $row->link }}</td>
-                        <td><a href="{{ route('shorten.link', $row->code) }}" target="_blank">{{ route('shorten.link', $row->code) }}</a></td>
+
+                        <td class="d-flex justify-content-between">
+                            <a href="{{ route('shorten.link', $row->code) }}" target="_blank">{{ route('shorten.link', $row->code) }}</a>
+                            <button value="{{$row->code}}" type="button" class="delete btn btn-outline-danger btn-sm">Delete</button>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>
 
 </x-app-layout>
 
+
+
 </body>
+
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+
+</script>
+
+<script>
+
+    $('.delete').click(function(event){
+        event.preventDefault();
+
+        let _token   = $('meta[name="csrf-token"]').attr('content');
+        let shortLink = $(".delete").val();
+
+        $.ajax({
+            url: '/delete-shortUrl',
+            type: "POST",
+            data: {'shortLink': shortLink, "_token" : _token},
+            success: function (response) {
+                console.log(shortLink)
+            },
+            error: function(error) {
+                console.log(error);
+            },
+            complete: function() {
+                window.location.href = '/dashboard';
+
+            }
+        });
+    });
+</script>
+
+

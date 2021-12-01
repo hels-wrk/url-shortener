@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Blacklist;
 use App\Models\ShortLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
 class ShortLinkController extends Controller
 {
-
     public function index()
     {
-        $shortLinks = ShortLink::latest()->get();
+        $shortLinks = ShortLink::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
 
         return view('shortenLink', compact('shortLinks'));
     }
@@ -20,32 +21,31 @@ class ShortLinkController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'link' => 'required|url'
+            'link' => 'required|url',
+            'secret'=>'max:8',
+            'customUrl'=>'max:10'
         ]);
 
         $input['link'] = $request->link;
+        $input['lifetime'] = $request->linkLifetime;
+        $input['secret'] = $request->secret;
 
 
-        foreach (ShortLink::all() as $i) {
-            if ($input['link'] == $i['link']) {
-                return redirect('/dashboard')
-                    ->with('success', 'Shorten link has already been created!');
-            }
+        if(ShortLink::where('link', $input['link'])->where('user_id', Auth::id())->first()) {
+            return redirect('/dashboard')
+                ->with('success', 'Shorten link has already been created!');
         }
 
-        if($request->customUrl) {
-            $input['code'] = $request->customUrl;
-        } else {
+        if(in_array($request->customUrl, (new Blacklist)->run())){
+            return redirect('/dashboard')
+                ->with('success', 'You are using forbidden word for Custom URL!');
+        } elseif(!$request->customUrl) {
             $input['code'] = Str::random(6);
+        } else {
+            $input['code'] = $request->customUrl;
         }
 
-        if($request->linkLifetime) {
-            $input['lifetime'] = $request->linkLifetime;
-        }
-
-        if($request->secret) {
-            $input['secret'] = $request->secret;
-        }
+        $input['user_id'] = Auth::id();
 
         ShortLink::create($input);
         return redirect('/dashboard')
@@ -55,30 +55,22 @@ class ShortLinkController extends Controller
 
     public function shortenLink($code)
     {
-        foreach (ShortLink::all() as $i){
-            if($i['code'] == $code && $i['lifetime'] < date('Y-m-d') && $i['lifetime']!= NULL) {
-                return redirect('/dashboard')
-                    ->with('success', 'Shorten link already died(');
-            }elseif($i['code'] == $code && $i['secret']){
-                return redirect('/dashboard')
-                    ->with('success', 'Something went wrong..');
-            }
+        if(ShortLink::where('code', $code)->where('lifetime', '<',  date('Y-m-d'))->orWhereNotNull('secret')->first()) {
+            return abort(404);
         }
 
         $find = ShortLink::where('code', $code)->first();
         return redirect($find->link);
+
     }
     public function shortenLinkWithSecretKey($code , $secret)
     {
 
-        foreach (ShortLink::all() as $i){
-            if($i['code'] == $code && $i['secret'] == $secret && $i['secret']) {
-                $find = ShortLink::where('code', $code)->first();
-                return redirect($find->link);
-            }
+        if(ShortLink::where('code', $code)->where('secret', $secret)->whereNotNull('secret')->first()) {
+            $find = ShortLink::where('code', $code)->first();
+            return redirect($find->link);
         }
-        return redirect('/dashboard')
-            ->with('success', 'Something went wrong..');
 
+        return abort(404);
     }
 }
