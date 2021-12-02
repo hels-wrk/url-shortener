@@ -40,7 +40,7 @@
                 </div>
             @endif
 
-            <table class="table table-bordered table-sm">
+            <table class="table table-bordered table-sm mt-3">
                 <thead>
                 <tr>
                     <th>Your link</th>
@@ -66,17 +66,14 @@
 
 </x-app-layout>
 
-
-
 </body>
 
 </html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 </script>
 
 <script>
-
     $('.delete').click(function(event){
         event.preventDefault();
 
@@ -95,7 +92,6 @@
             },
             complete: function() {
                 window.location.href = '/dashboard';
-
             }
         });
     });
