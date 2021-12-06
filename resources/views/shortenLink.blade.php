@@ -68,33 +68,15 @@
 
 </body>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../js/deleteShortenLink.js"></script>
+
 </html>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
 
-<script>
-    $('.delete').click(function(event){
-        event.preventDefault();
 
-        let _token   = $('meta[name="csrf-token"]').attr('content');
-        let shortLink = $(".delete").val();
 
-        $.ajax({
-            url: '/delete-shortUrl',
-            type: "POST",
-            data: {'shortLink': shortLink, "_token" : _token},
-            success: function (response) {
-                console.log(shortLink)
-            },
-            error: function(error) {
-                console.log(error);
-            },
-            complete: function() {
-                window.location.href = '/dashboard';
-            }
-        });
-    });
-</script>
+
+
 
 
