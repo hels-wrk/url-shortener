@@ -3,9 +3,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetShortLinkRequest;
 use App\Models\ShortLink;
 use App\Services\ShortLinkService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Blacklist;
 
@@ -19,14 +19,8 @@ class ShortLinkController extends Controller
         return view('shortenLink', compact('shortLinks'));
     }
 
-    public function getShortLink(Request $request)
+    public function getShortLink(GetShortLinkRequest $request)
     {
-        $request->validate([
-            'link' => 'required|url',
-            'secret' => 'max:8',
-            'customUrl' => 'max:10'
-        ]);
-
         $input['link'] = $request->link;
         $input['lifetime'] = $request->linkLifetime;
         $input['secret'] = $request->secret;
@@ -50,5 +44,4 @@ class ShortLinkController extends Controller
         return redirect('/dashboard')
             ->with('success', 'Shorten link generated');
     }
-
 }
