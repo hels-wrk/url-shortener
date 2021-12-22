@@ -52,7 +52,7 @@
                     <tr>
                         <td>{{ $row->link }}</td>
 
-                        <td class="d-flex justify-content-between border-0">
+                        <td class="d-flex justify-content-between border-1">
                             <a href="{{ route('shorten.link', $row->code) }}">{{ route('shorten.link', $row->code) }}</a>
                             <button value="{{$row->code}}" type="button" class="delete btn btn-outline-danger btn-sm">Delete</button>
                         </td>
@@ -69,7 +69,7 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="/public/js/deleteShortenLink.js"></script>
+<script src="/js/deleteShortenLink.js"></script>
 
 </html>
 

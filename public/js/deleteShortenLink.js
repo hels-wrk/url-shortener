@@ -1,21 +1,31 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*******************************************!*\
+  !*** ./resources/js/deleteShortenLink.js ***!
+  \*******************************************/
 $('.delete').click(function (event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    let _token = $('meta[name="csrf-token"]').attr('content');
-    let shortLink = $(".delete").val();
+  var _token = $('meta[name="csrf-token"]').attr('content');
 
-    $.ajax({
-        url: '/delete-shortUrl',
-        type: "POST",
-        data: {'shortLink': shortLink, "_token": _token},
-        success: function (response) {
-            console.log(shortLink)
-        },
-        error: function (error) {
-            console.log(error);
-        },
-        complete: function () {
-            window.location.href = '/dashboard';
-        }
-    });
+  var shortLink = $(".delete").val();
+  $.ajax({
+    url: '/delete-shortUrl',
+    type: "POST",
+    data: {
+      'shortLink': shortLink,
+      "_token": _token
+    },
+    success: function success(response) {
+      console.log(shortLink);
+    },
+    error: function error(_error) {
+      console.log(_error);
+    },
+    complete: function complete() {
+      window.location.href = '/dashboard';
+    }
+  });
 });
+/******/ })()
+;

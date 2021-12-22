@@ -28,8 +28,8 @@ require __DIR__.'/auth.php';
 
 Route::get('auth/github', [GitHubController::class, 'gitRedirect']);
 Route::get('auth/github/callback', [GitHubController::class, 'gitCallback']);
+Route::post('/generate-shorten-link', [ShortLinkController::class, 'getShortLink'])->middleware(['linkAlreadyCreated','linkFromBlacklist'])->name('generate.shorten.link.post');
 Route::get('/dashboard', [ShortLinkController::class, 'showDashboard'])->middleware(['auth'])->name('dashboard');
-Route::post('/generate-shorten-link', [ShortLinkController::class, 'getShortLink'])->name('generate.shorten.link.post');
 
 Route::get('/{code}/{secret}', [ShortLinkWorkController::class, 'shortenLinkWithSecretKey']);
 Route::get('/{code}', [ShortLinkWorkController::class, 'shortenLinkWork'])->name('shorten.link');
